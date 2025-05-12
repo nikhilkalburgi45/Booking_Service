@@ -5,6 +5,7 @@ const {StatusCodes} = require('http-status-codes');
 
 
 class BookingRepository{
+
     async create(data){
         try{
             const booking = await Booking.create(data);
