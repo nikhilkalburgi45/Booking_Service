@@ -21,15 +21,51 @@ class BookingRepository {
     }
   }
 
-  async update(bookingId, data) {
+  async get(id) {
     try {
-      const booking = await Booking.findByPk(bookingId);
-      if (data.status) {
-        booking.status = data.status;
+      const booking = await Booking.findByPk(id);
+      if (!booking) {
+        throw new AppError(
+          "Not Found",
+          "Booking not found",
+          "The booking you are trying to fetch does not exist",
+          StatusCodes.NOT_FOUND
+        );
       }
-      await booking.save();
       return booking;
     } catch (error) {
+      if (error instanceof AppError) {
+        throw error;
+      }
+      throw new AppError(
+        "Repository Error",
+        "Cannot fetch booking",
+        "There was an error while fetching the booking",
+        StatusCodes.INTERNAL_SERVER_ERROR
+      );
+    }
+  }
+
+  async update(id, data) {
+    try {
+      const booking = await Booking.findByPk(id);
+      if (!booking) {
+        throw new AppError(
+          "Not Found",
+          "Booking not found",
+          "The booking you are trying to update does not exist",
+          StatusCodes.NOT_FOUND
+        );
+      }
+      await booking.update(data);
+      return booking;
+    } catch (error) {
+      if (error.name == "SequelizeValidationError") {
+        throw new ValidationError(error);
+      }
+      if (error instanceof AppError) {
+        throw error;
+      }
       throw new AppError(
         "Repository Error",
         "Cannot update booking",
