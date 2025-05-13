@@ -44,6 +44,50 @@ class BookingService {
       throw new ServiceError();
     }
   }
+
+  async updateBooking(id, data) {
+    try {
+      // If updating seats, validate against flight capacity
+      if (data.noOfSeats) {
+        const booking = await this.bookingRepository.get(id);
+        const getFlightRequestUrl = `${FLIGHT_SERVICE_PATH}/api/v1/flights/${booking.flightId}`;
+        const response = await axios.get(getFlightRequestUrl);
+        const flightData = response.data.data;
+
+        // Calculate new total seats after update
+        const currentSeats = booking.noOfSeats;
+        const newSeats = data.noOfSeats;
+        const seatDifference = newSeats - currentSeats;
+
+        if (seatDifference > 0 && seatDifference > flightData.totalSeats) {
+          throw new ServiceError(
+            "Not enough seats available",
+            "Cannot update booking with more seats than available"
+          );
+        }
+
+        // Update flight seats
+        const updateFlightRequestUrl = `${FLIGHT_SERVICE_PATH}/api/v1/flights/${booking.flightId}`;
+        await axios.patch(updateFlightRequestUrl, {
+          totalSeats: flightData.totalSeats - seatDifference
+        });
+
+        // Calculate new total cost
+        data.totalCost = flightData.price * newSeats;
+      }
+
+      const updatedBooking = await this.bookingRepository.update(id, data);
+      return updatedBooking;
+    } catch (error) {
+      if (error instanceof ServiceError) {
+        throw error;
+      }
+      throw new ServiceError(
+        "Cannot update booking",
+        "There was an error while updating the booking"
+      );
+    }
+  }
 }
 
 module.exports = BookingService;
