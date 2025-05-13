@@ -22,6 +22,26 @@ const create = async (req, res) => {
   }
 };
 
+const update = async (req, res) => {
+  try {
+    const response = await bookingService.updateBooking(req.params.id, req.body);
+    return res.status(StatusCodes.OK).json({
+      message: "Booking updated successfully",
+      success: true,
+      error: {},
+      data: response,
+    });
+  } catch (error) {
+    return res.status(error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: error.message || "Something went wrong",
+      success: false,
+      error: error.explanation || {},
+      data: {},
+    });
+  }
+};
+
 module.exports = {
   create,
+  update,
 };
