@@ -21,6 +21,13 @@ module.exports = {
       allowNull: false,
       defaultValue: 0,
     });
+
+    // Fix the status column default value
+    await queryInterface.changeColumn("Bookings", "status", {
+      type: Sequelize.ENUM('InProcess', 'Booked', 'Cancelled'),
+      allowNull: false,
+      defaultValue: 'InProcess'
+    });
   },
 
   async down(queryInterface, Sequelize) {
@@ -32,5 +39,12 @@ module.exports = {
      */
     await queryInterface.removeColumn("Bookings", "noOfSeats");
     await queryInterface.removeColumn("Bookings", "totalCost");
+    
+    // Revert the status column change
+    await queryInterface.changeColumn("Bookings", "status", {
+      type: Sequelize.ENUM('InProcess', 'Booked', 'Cancelled'),
+      allowNull: false,
+      defaultValue: 'InProcess'
+    });
   },
 };
