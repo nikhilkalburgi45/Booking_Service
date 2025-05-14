@@ -69,7 +69,7 @@ class BookingService {
         // Update flight seats
         const updateFlightRequestUrl = `${FLIGHT_SERVICE_PATH}/api/v1/flights/${booking.flightId}`;
         await axios.patch(updateFlightRequestUrl, {
-          totalSeats: flightData.totalSeats - seatDifference
+          totalSeats: flightData.totalSeats - seatDifference,
         });
 
         // Calculate new total cost
