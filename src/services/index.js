@@ -1,7 +1,7 @@
 const BookingService = require("./booking-service");
 
-const bookingService = new BookingService();
+// const bookingService = new BookingService();
 
 module.exports = {
-  bookingService
+  BookingService
 };
