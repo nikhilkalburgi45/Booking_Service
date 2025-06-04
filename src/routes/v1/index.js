@@ -1,8 +1,15 @@
 const express = require("express");
-const bookingRoutes = require("../../routes/booking-routes");
+const { BookingController } = require("../../controllers");
 
 const router = express.Router();
+const bookingController = new BookingController();
 
-router.use("/bookings", bookingRoutes);
+// Booking routes
+router.post("/bookings", bookingController.create.bind(bookingController));
+router.patch("/bookings/:id", bookingController.update.bind(bookingController));
+router.post(
+  "/bookings/publish",
+  bookingController.sendMessageToQueue.bind(bookingController)
+);
 
 module.exports = router;
