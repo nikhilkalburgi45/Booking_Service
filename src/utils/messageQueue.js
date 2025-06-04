@@ -15,6 +15,7 @@ const createChannel = async () => {
 
 const publishMessage = async (channel, binding_key, message) => {
   try {
+    await channel.assertQueue("NOTIFICATION_QUEUE");
     await channel.publish(EXCHANGE_NAME, binding_key, Buffer.from(message));
   } catch (error) {
     throw error;
