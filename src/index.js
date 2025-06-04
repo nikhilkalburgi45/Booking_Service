@@ -2,16 +2,20 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 
-const { PORT} = require("./config/serverConfig");
+const { PORT, REMINDER_BINDING_KEY } = require("./config/serverConfig");
 const apiRoutes = require("./routes/index");
+const { createChannel, subscribeMessage } = require('./utils/messageQueue');
 
 const db = require("./models/index");
 
-const setupAndStartServer = () => {
+const setupAndStartServer = async () => {
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
 
   app.use("/api", apiRoutes);
+
+  const channel = await createChannel();
+  await subscribeMessage(channel, 'BOOKING_SERVICE', REMINDER_BINDING_KEY);
 
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
@@ -21,4 +25,5 @@ const setupAndStartServer = () => {
     }
   });
 };
+
 setupAndStartServer();
