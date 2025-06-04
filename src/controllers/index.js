@@ -1,3 +1,5 @@
+const { BookingController } = require("./booking-controllers");
+
 module.exports = {
-  bookingController: require("./booking-controllers"),
+  BookingController
 };
