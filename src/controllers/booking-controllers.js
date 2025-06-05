@@ -8,7 +8,7 @@ const { createChannel, publishMessage } = require("../utils/messageQueue");
 const { REMINDER_BINDING_KEY } = require("../config/serverConfig");
 
 class BookingController {
-  constructor(channel) {}
+  constructor() {}
 
   async sendMessageToQueue(req, res) {
     const channel = await createChannel();
@@ -16,7 +16,6 @@ class BookingController {
     publishMessage(channel, REMINDER_BINDING_KEY, JSON.stringify(data));
     return res.status(StatusCodes.OK).json({
       message: "Successfully published the event",
-      success: true,
     });
   }
 
@@ -69,5 +68,5 @@ class BookingController {
 }
 
 module.exports = {
-  BookingController
+  BookingController,
 };
