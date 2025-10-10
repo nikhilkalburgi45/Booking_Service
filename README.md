@@ -235,4 +235,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## 🙏 Acknowledgments
 
 - Flight Service team for API integration
-- All contributors who have helped shape this project 
+- All contributors who have helped shape this project
