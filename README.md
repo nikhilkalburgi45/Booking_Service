@@ -163,7 +163,7 @@ src/
 
 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/BookingService.git
+git clone https://github.com/nikhilkalburgi45/Booking_Service.git
 ```
 
 2. Install dependencies
