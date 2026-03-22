@@ -4,7 +4,7 @@ const app = express();
 
 const { PORT, REMINDER_BINDING_KEY } = require("./config/serverConfig");
 const apiRoutes = require("./routes/index");
-const { createChannel, subscribeMessage } = require('./utils/messageQueue');
+const { createChannel, subscribeMessage } = require("./utils/messageQueue");
 
 const db = require("./models/index");
 
@@ -12,10 +12,21 @@ const setupAndStartServer = async () => {
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
 
+  const cors = require("cors");
+
+  app.use(
+    cors({
+      origin: "http://localhost:5173", // your Vite frontend URL
+      credentials: true, // needed for httpOnly cookies
+      methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+      allowedHeaders: ["Content-Type", "Authorization"],
+    }),
+  );
+
   app.use("/api", apiRoutes);
 
   const channel = await createChannel();
-  await subscribeMessage(channel, 'BOOKING_SERVICE', REMINDER_BINDING_KEY);
+  await subscribeMessage(channel, "BOOKING_SERVICE", REMINDER_BINDING_KEY);
 
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

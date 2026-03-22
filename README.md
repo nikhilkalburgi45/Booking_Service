@@ -161,6 +161,26 @@ src/
 
 ## 🚀 Getting Started
 
+### Using Docker (Recommended)
+
+1. Clone the repository
+```bash
+git clone https://github.com/nikhilkalburgi45/Booking_Service.git
+cd BookingService
+```
+
+2. Build the Docker image
+```bash
+docker build -t booking-service .
+```
+
+3. Run the container
+```bash
+docker run -p 3001:3001 --env-file .env booking-service
+```
+
+### Local Development
+
 1. Clone the repository
 ```bash
 git clone https://github.com/nikhilkalburgi45/Booking_Service.git

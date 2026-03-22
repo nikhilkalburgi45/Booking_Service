@@ -18,7 +18,7 @@ class BookingService {
       if (data.noOfSeats > flightData.totalSeats) {
         throw new ServiceError(
           "Something went wrong in booking",
-          "Cannot book more seats than available"
+          "Cannot book more seats than available",
         );
       }
       const totalCost = priceOfTheFlight * data.noOfSeats;
@@ -62,7 +62,7 @@ class BookingService {
         if (seatDifference > 0 && seatDifference > flightData.totalSeats) {
           throw new ServiceError(
             "Not enough seats available",
-            "Cannot update booking with more seats than available"
+            "Cannot update booking with more seats than available",
           );
         }
 
@@ -84,7 +84,19 @@ class BookingService {
       }
       throw new ServiceError(
         "Cannot update booking",
-        "There was an error while updating the booking"
+        "There was an error while updating the booking",
+      );
+    }
+  }
+
+  async getBookings() {
+    try {
+      const bookings = await this.bookingRepository.getAll();
+      return bookings;
+    } catch (error) {
+      throw new ServiceError(
+        "Cannot fetch bookings",
+        "There was an error while fetching the bookings",
       );
     }
   }

@@ -16,7 +16,7 @@ class BookingRepository {
         "Repository Error",
         "Cannot create booking",
         "There might be a problem with the data sent in the request",
-        StatusCodes.INTERNAL_SERVER_ERROR
+        StatusCodes.INTERNAL_SERVER_ERROR,
       );
     }
   }
@@ -29,7 +29,7 @@ class BookingRepository {
           "Not Found",
           "Booking not found",
           "The booking you are trying to fetch does not exist",
-          StatusCodes.NOT_FOUND
+          StatusCodes.NOT_FOUND,
         );
       }
       return booking;
@@ -41,7 +41,7 @@ class BookingRepository {
         "Repository Error",
         "Cannot fetch booking",
         "There was an error while fetching the booking",
-        StatusCodes.INTERNAL_SERVER_ERROR
+        StatusCodes.INTERNAL_SERVER_ERROR,
       );
     }
   }
@@ -54,7 +54,7 @@ class BookingRepository {
           "Not Found",
           "Booking not found",
           "The booking you are trying to update does not exist",
-          StatusCodes.NOT_FOUND
+          StatusCodes.NOT_FOUND,
         );
       }
       await booking.update(data);
@@ -70,7 +70,21 @@ class BookingRepository {
         "Repository Error",
         "Cannot update booking",
         "There might be a problem with the data sent in the request",
-        StatusCodes.INTERNAL_SERVER_ERROR
+        StatusCodes.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async getAll() {
+    try {
+      const bookings = await Booking.findAll();
+      return bookings;
+    } catch (error) {
+      throw new AppError(
+        "Repository Error",
+        "Cannot fetch bookings",
+        "There was an error while fetching the bookings",
+        StatusCodes.INTERNAL_SERVER_ERROR,
       );
     }
   }

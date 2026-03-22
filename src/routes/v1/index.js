@@ -5,11 +5,12 @@ const router = express.Router();
 const bookingController = new BookingController();
 
 // Booking routes
+router.get("/bookings", bookingController.getBookings.bind(bookingController));
 router.post("/bookings", bookingController.create.bind(bookingController));
 router.patch("/bookings/:id", bookingController.update.bind(bookingController));
 router.post(
   "/publish",
-  bookingController.sendMessageToQueue.bind(bookingController)
+  bookingController.sendMessageToQueue.bind(bookingController),
 );
 
 module.exports = router;

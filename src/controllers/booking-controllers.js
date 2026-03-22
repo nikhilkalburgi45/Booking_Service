@@ -54,7 +54,7 @@ class BookingController {
     try {
       const response = await bookingService.updateBooking(
         req.params.id,
-        req.body
+        req.body,
       );
       return res.status(StatusCodes.OK).json({
         message: "Booking updated successfully",
@@ -64,6 +64,28 @@ class BookingController {
       });
     } catch (error) {
       console.error("Error updating booking:", error);
+      return res
+        .status(error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({
+          message: error.message || "Something went wrong",
+          success: false,
+          error: error.explanation || {},
+          data: {},
+        });
+    }
+  }
+
+  async getBookings(req, res) {
+    try {
+      const response = await bookingService.getBookings();
+      return res.status(StatusCodes.OK).json({
+        message: "Bookings fetched successfully",
+        success: true,
+        error: {},
+        data: response,
+      });
+    } catch (error) {
+      console.error("Error fetching bookings:", error);
       return res
         .status(error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR)
         .json({
