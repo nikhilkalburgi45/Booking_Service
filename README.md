@@ -30,7 +30,7 @@ A microservice for handling flight bookings in an airline management system. Thi
 Create a `.env` file in the root directory with the following variables:
 
 ```env
-PORT=3001
+PORT=5000
 FLIGHT_SERVICE_PATH=http://localhost:4000
 DB_NAME=airline_booking
 DB_USERNAME=root
